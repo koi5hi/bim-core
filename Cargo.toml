@@ -1,14 +1,28 @@
 [package]
-name = "bimc"
-version = "0.11.0"
+name = "bim-core"
+version = "0.17.0"
 edition = "2021"
+description = "Client core for bench.im."
+license = "GPL-2.0-only"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[[bin]]
+name = "bim"
+path = "src/server.rs"
+
+[[bin]]
+name = "bimc"
+path = "src/client.rs"
 
 [dependencies]
 url = "2"
 getopts = "0.2"
-native-tls = { version = "0.2", features = ["vendored"] }
+webpki-roots = "0.22"
+rustls = "0.20"
+tiny_http = "0.11"
+unicode-width = "0.1"
+serde = { version = "1.0", features = ["derive"] }
 
 log = "0.4"
 env_logger = "0.9"

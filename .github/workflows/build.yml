@@ -1,8 +1,5 @@
-name: Build Releases
-on:
-  push:
-    tags:
-      - v*
+name: Build
+on: push
 
 env:
   CARGO_TERM_COLOR: always
@@ -56,14 +53,12 @@ jobs:
           cd ./build/release
           shasum -a 256 bimc-${{ matrix.target }} > bimc-${{ matrix.target }}.sha256
           shasum -a 256 bim-${{ matrix.target }} > bim-${{ matrix.target }}.sha256
-
-      - name: Upload Github Assets
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
         with:
-          files: build/release/*
-          prerelease: ${{ contains(github.ref, '-') }}
+          name: bim
+          path: build/release/*
 
   build-windows:
     runs-on: windows-latest
@@ -92,13 +87,11 @@ jobs:
           Get-FileHash bimc.exe | Format-List > bimc.exe.sha256
           Get-FileHash bim.exe | Format-List > bim.exe.sha256
 
-      - name: Upload Github Assets
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
         with:
-          files: build/release/*
-          prerelease: ${{ contains(github.ref, '-') }}
+          name: bim
+          path: build/release/*
     
   build-macos:
     runs-on: macos-latest
@@ -127,10 +120,8 @@ jobs:
           shasum -a 256 bim-macos > bim-macos.sha256
           shasum -a 256 bimc-macos > bimc-macos.sha256
 
-      - name: Upload Github Assets
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
         with:
-          files: build/release/*
-          prerelease: ${{ contains(github.ref, '-') }}
+          name: bim
+          path: build/release/*
